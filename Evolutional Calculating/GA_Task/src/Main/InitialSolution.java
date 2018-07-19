@@ -8,8 +8,7 @@ import java.util.*;
 public class InitialSolution {
     private LinkedHashMap<String, List> meetMapDataAftersort = new LinkedHashMap<>();
     private List<String> meetNameData = new ArrayList<>();
-    private List<List<LinkedHashMap<String, List>>> initialSolutionsList = new ArrayList<>();
-    private List<LinkedHashMap<String, List>> meetMapDataAftersortList = new ArrayList<>();
+    private List<LinkedHashMap<String, List>> initialSolutionsList = new ArrayList<>();
 //    public LinkedHashMap<String, List> meetMapData;
 //    public LinkedHashMap<String, List> meetMapDataAftersort;
 //    public List<String> meetNameData;
@@ -20,22 +19,23 @@ public class InitialSolution {
 //    }
 
     //適当な1つの解から引数で与えるsolutionNumber個の初期解を返すメソッド
-    public List<List<LinkedHashMap<String, List>>> GenerateInitialsolution(LinkedHashMap<String, List> meetMapData, int solutionNumber) {
+    public List<LinkedHashMap<String, List>> GenerateInitialsolution(LinkedHashMap<String, List> meetMapData, int initialsolutionNumber) {
         this.meetNameData.addAll(meetMapData.keySet());
 //        for (String meetName : meetMapData.keySet()) {
 //            this.meetNameData.add(meetName);
 //        }
         System.out.println(this.meetNameData + "あ");
-        for(int i = 0; i < solutionNumber; i++) {
+        for(int i = 0; i < initialsolutionNumber; i++) {
 //            this.initialSolutionsList = new ArrayList<>();
             Collections.shuffle(this.meetNameData);
-            meetMapDataAftersortList = new ArrayList<>();
+            this.meetMapDataAftersort = new LinkedHashMap<>();
+//            meetMapDataAftersortList = new ArrayList<>();
             for(int j = 0; j < meetNameData.size(); j++){
-                this.meetMapDataAftersort = new LinkedHashMap<>();
                 this.meetMapDataAftersort.put(this.meetNameData.get(j), meetMapData.get(this.meetNameData.get(j)));
-                this.meetMapDataAftersortList.add(this.meetMapDataAftersort);
+//                this.meetMapDataAftersortList.add(this.meetMapDataAftersort);
+
             }
-            this.initialSolutionsList.add(this.meetMapDataAftersortList);
+            this.initialSolutionsList.add(this.meetMapDataAftersort);
         }
 
         //返すリストの形List{[0] -> Map{[肉の名前], List[肉のデータ]}, [1] -> …}

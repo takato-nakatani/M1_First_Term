@@ -30,14 +30,15 @@ public class OrderCrossover {
 //    }
 
 //    public List<List<Map>> SolutionsOrderCrossover(List<List<Map>> SolutionPopulationList, int CrossoverNumber){
-    public void SolutionsOrderCrossover(List<List<LinkedHashMap<String, List>>> SolutionPopulationList, int CrossoverNumber) {
+    public List<LinkedHashMap<String, List>> SolutionsOrderCrossover(List<LinkedHashMap<String, List>> SolutionPopulationList, int CrossoverloopNumber, int initialSolutionNumber) {
         //親の個体を重複無しでランダムに得られるように乱数のリストを生成
-        for (int k = 0; k < SolutionPopulationList.size(); k++) {
+        for (int k = 0; k < initialSolutionNumber; k++) {
             this.randomCrossoverPlaceList.add(k);
+            System.out.println("個数　：　" + this.randomCrossoverPlaceList + initialSolutionNumber);
         }
 
         ///交叉開始
-        for (int m = 0; m < CrossoverNumber; m++) {
+        for (int m = 0; m < CrossoverloopNumber; m++) {
             this.parentSolution1 = new ArrayList<>();
             this.parentSolution2 = new ArrayList<>();
             this.offspring1SolutionMap = new LinkedHashMap<>();
@@ -46,17 +47,14 @@ public class OrderCrossover {
             System.out.println("-------------------------------------------交叉------------------------------------------");
             System.out.println(this.randomCrossoverPlaceList);
             System.out.println(SolutionPopulationList);
+
             //親の個体を重複無しでランダムに2つ取り出して2つの変数を格納
-            for (LinkedHashMap meetNameMap : SolutionPopulationList.get(this.randomCrossoverPlaceList.get(0))) {
-                this.parentSolution1.addAll(meetNameMap.keySet());
-            }
+            this.parentSolution1.addAll(SolutionPopulationList.get(this.randomCrossoverPlaceList.get(0)).keySet());
             System.out.println("親1：" + parentSolution1);
-
-            for (LinkedHashMap meetNameMap : SolutionPopulationList.get(this.randomCrossoverPlaceList.get(1))) {
-                this.parentSolution2.addAll(meetNameMap.keySet());
-            }
-
+            this.parentSolution2.addAll(SolutionPopulationList.get(this.randomCrossoverPlaceList.get(1)).keySet());
             System.out.println("親2：" + parentSolution2);
+
+
             this.separatePoint = this.random.nextInt(this.parentSolution1.size());
 
             this.offspring1MeetName = this.GenerateOffspring(this.separatePoint, this.parentSolution1, this.parentSolution2);
@@ -66,26 +64,35 @@ public class OrderCrossover {
             System.out.println("子孫2：" + this.offspring2MeetName);
 //            for(int i = 0; i < this.separatePoint + 1; i++){
             //子孫1の肉名とデータをMap型に格納
+
+
             for(int i = 0; i < this.offspring1MeetName.size(); i++){
-                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList.get(0)) {
-                    if(meetMap.keySet().iterator().next().equals(this.offspring1MeetName.get(i))){
-//                        System.out.println("操作前 : " + this.offspring1MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring1MeetName.get(i)));
-                        this.offspring1SolutionMap.put(this.offspring1MeetName.get(i), meetMap.get(this.offspring1MeetName.get(i)));
+                out1 :
+                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList) {
+                    for (String meetName : meetMap.keySet()) {
+                        if (meetName.equals(this.offspring1MeetName.get(i))) {
+                            System.out.println("操作前 : " + this.offspring1MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring1MeetName.get(i)));
+                            this.offspring1SolutionMap.put(this.offspring1MeetName.get(i), meetMap.get(this.offspring1MeetName.get(i)));
+                            break out1;
+                        }
                     }
                 }
 //                this.offspring1SolutionMap.put(this.offspring1MeetName.get(i), )
             }
 
             for(int i = 0; i < this.offspring2MeetName.size(); i++){
-                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList.get(0)) {
-                    if(meetMap.keySet().iterator().next().equals(this.offspring2MeetName.get(i))){
-//                        System.out.println("操作前 : " + this.offspring2MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring2MeetName.get(i)));
-                        this.offspring2SolutionMap.put(this.offspring2MeetName.get(i), meetMap.get(this.offspring2MeetName.get(i)));
+                out2 :
+                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList) {
+                    for (String meetName : meetMap.keySet()) {
+                        if (meetName.equals(this.offspring2MeetName.get(i))) {
+                            System.out.println("操作前 : " + this.offspring2MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring2MeetName.get(i)));
+                            this.offspring2SolutionMap.put(this.offspring2MeetName.get(i), meetMap.get(this.offspring2MeetName.get(i)));
+                            break out2;
+                        }
                     }
                 }
 //                this.offspring1SolutionMap.put(this.offspring1MeetName.get(i), )
             }
-
             //子孫1と子孫2のMapデータをリストに挿入
 
 
@@ -129,6 +136,7 @@ public class OrderCrossover {
 //                }
 //            }
             System.out.println("子孫1の解データ：" + offspring1SolutionMap);
+            this.OrderCrossoverSolutionList.add(this.offspring1SolutionMap);
 //            System.out.println("引数の解：" + SolutionPopulationList.get(0));
 //            for (String meetName2 : this.offspring2MeetName) {
 //                for(LinkedHashMap<String, List> meetMap : SolutionPopulationList.get(0)){
@@ -144,9 +152,12 @@ public class OrderCrossover {
             this.OrderCrossoverSolutionList.add(this.offspring2SolutionMap);
 
         }
+        System.out.println(this.OrderCrossoverSolutionList);
+        System.out.println("-------------------------------------------交叉終了------------------------------------------");
+        return this.OrderCrossoverSolutionList;
     }
 
-//        return this.OrderCrossoverSolutionList;
+
 
 
 
