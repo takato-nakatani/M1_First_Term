@@ -6,9 +6,9 @@ package Main;
 import java.util.*;
 
 public class InitialSolution {
-    private LinkedHashMap<String, List> meetMapDataAftersort = new LinkedHashMap<>();
+    private LinkedHashMap<String, List<Integer>> meetMapDataAftersort = new LinkedHashMap<>();
     private List<String> meetNameData = new ArrayList<>();
-    private List<LinkedHashMap<String, List>> initialSolutionsList = new ArrayList<>();
+    private List<LinkedHashMap<String, List<Integer>>> initialSolutionsList = new ArrayList<>();
 //    public LinkedHashMap<String, List> meetMapData;
 //    public LinkedHashMap<String, List> meetMapDataAftersort;
 //    public List<String> meetNameData;
@@ -19,7 +19,7 @@ public class InitialSolution {
 //    }
 
     //適当な1つの解から引数で与えるsolutionNumber個の初期解を返すメソッド
-    public List<LinkedHashMap<String, List>> GenerateInitialsolution(LinkedHashMap<String, List> meetMapData, int initialsolutionNumber) {
+    public List<LinkedHashMap<String, List<Integer>>> GenerateInitialsolution(LinkedHashMap<String, List<Integer>> meetMapData, int initialsolutionNumber) {
         this.meetNameData.addAll(meetMapData.keySet());
 //        for (String meetName : meetMapData.keySet()) {
 //            this.meetNameData.add(meetName);

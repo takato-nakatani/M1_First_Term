@@ -6,25 +6,30 @@ public class Main {
     private static final int INITIAL_SOLUTION_NUMBER = 2;
     private static final int CROSSOVER_LOOP_NUMBER = 2;
     private static final int ONE_GENERATION_SOLUTION_NUMBER = INITIAL_SOLUTION_NUMBER + 2 * CROSSOVER_LOOP_NUMBER;
-    private static final int MUTATION_PROBABILITY = 5;
+    private static final int MUTATION_PROBABILITY = 100;
+    private static final int PRICE_LIMIT = 2000;
+    private static final int FULL_DEGREE_LIMIT = 11;
+    private static final int TOURNAMENT_SIZE = 2;
     public static int cnt = 0;
-    public static int valueOrder = 0;
     public static int mutationGene1;
     public static int mutationGene2;
     public static List<Integer> meetNameNumber = new ArrayList<>();
     public static LinkedHashMap<Integer, String> meetNameMap = new LinkedHashMap<>();
     public static LinkedHashMap<Integer, String> meetNameMapCopy = new LinkedHashMap<>();
-    public static List<LinkedHashMap<String, List>> meetDataMapList = new ArrayList<>();
-    public static LinkedHashMap<String, List> meetMapData = new LinkedHashMap<>();
-    public static List<Object> meetData = new ArrayList<>();
-    public static List<Object> meetData2 = new ArrayList<>();
-    public static List<Object> meetData3 = new ArrayList<>();
-    public static List<LinkedHashMap<String, List>> meetMapDataList = new ArrayList<>();
-    public static List<LinkedHashMap<String, List>> OrderCrossoverDataList = new ArrayList<>();
-    public static List<LinkedHashMap<String, List>> SolutionDataList = new ArrayList<>();
-    public static List<LinkedHashMap<String, List>> SolutionDataListAfterMutation = new ArrayList<>();
-    public static List<LinkedHashMap<String, List>> previousGenerationsSolution = new ArrayList<>();
-    public static LinkedHashMap<String, List> afterMutation = new LinkedHashMap<>();
+    public static List<LinkedHashMap<String, List<Integer>>> meetDataMapList = new ArrayList<>();
+    public static LinkedHashMap<String, List<Integer>> meetMapData = new LinkedHashMap<>();
+    public static List<Integer> meetData = new ArrayList<>();
+    public static List<Integer> meetData2 = new ArrayList<>();
+    public static List<Integer> meetData3 = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> meetMapDataList = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> OrderCrossoverDataList = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> SolutionDataList = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> SolutionDataListAfterMutation = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> previousGenerationsSolution = new ArrayList<>();
+    public static List<LinkedHashMap<String, List<Integer>>> nextGenerationsSolution = new ArrayList<>();
+    public static LinkedHashMap<String, List<Integer>> afterMutation = new LinkedHashMap<>();
+    public static LinkedHashMap<List<String>, Integer> meetNameAndEvaluation = new LinkedHashMap<>();
+
     public static Random random = new Random();
 
     public static void main(String[] args){
@@ -61,62 +66,18 @@ public class Main {
         SolutionDataList.addAll(previousGenerationsSolution);
         previousGenerationsSolution = new ArrayList<>();
         SolutionDataList.addAll(OrderCrossoverDataList);
-        System.out.println("突然変異前 : " + SolutionDataList);
-
         //解のリストであるSolutionDataListの各要素に対してmutationを確率的に行う。
-        SolutionDataListAfterMutation = new ArrayList<>();
-        for(LinkedHashMap<String, List> solution : SolutionDataList){
-
-            if(random.nextInt(100) < 100){
-                meetNameMap = new LinkedHashMap<>();
-                meetNameMapCopy = new LinkedHashMap<>();
-                for(int i = 0; i < solution.size(); i++){
-                    for(String keyname : solution.keySet()){
-                        if(i == cnt){
-                            meetNameMap.put(i, keyname);
-                            meetNameMapCopy.put(i, keyname);
-                            cnt = 0;
-                            break;
-                        }
-                        cnt++;
-                    }
-                }
-                System.out.println("マップ　：　" + meetNameMap);
-                meetDataMapList = new ArrayList<>();
-                meetDataMapList.add(solution);
-                System.out.println("リスト　：　" + meetDataMapList);
-                meetNameNumber = new ArrayList<>();
-                for(int k = 0; k < solution.size(); k++){
-                    meetNameNumber.add(k);
-                }
-                System.out.println(meetNameNumber);
-                Collections.shuffle(meetNameNumber);
-                mutationGene1 = meetNameNumber.get(0);
-                mutationGene2 = meetNameNumber.get(1);
-                meetNameMap.replace(mutationGene1, meetNameMapCopy.get(mutationGene2));
-                meetNameMap.replace(mutationGene2, meetNameMapCopy.get(mutationGene1));
-                System.out.println(mutationGene1);
-                System.out.println(mutationGene2);
-                System.out.println(meetNameMap);
-                afterMutation = new LinkedHashMap<>();
-                for(int n = 0; n < solution.size(); n++){
-                    afterMutation.put(meetNameMap.get(n), solution.get(meetNameMap.get(n)));
-                }
-                System.out.println(afterMutation);
-                SolutionDataListAfterMutation.add(afterMutation);
-                continue;
-            }
-            SolutionDataListAfterMutation.add(solution);
-        }
-        System.out.println("突然変異前 : " + SolutionDataList);
-        System.out.println("突然変異後 : " + SolutionDataListAfterMutation);
+        Mutation Mutation = new Mutation();
+        SolutionDataListAfterMutation = Mutation.MutationGene(SolutionDataList, MUTATION_PROBABILITY);
         //solutionArrayの各配列に対して、2つの制約条件(値段と胃もたれ度)を満たす解の範囲を決定し、解の有効範囲の終端の要素番号を取得し、effectiveRangeという変数に格納
-        
         //solutionArrayのeffectiveRangeまでの範囲の各要素を目的関数によって評価する。
+        Evaluation evaluation = new Evaluation();
+        meetNameAndEvaluation = evaluation.EvaluateMeet(SolutionDataListAfterMutation, PRICE_LIMIT, FULL_DEGREE_LIMIT);
 
         //ここからトーナメント選択
         //解の配列solutionArrayからt個の解取り出して、一番いいものをadaptationSolutionsという配列に格納する。
-
+        SelectSolution SS = new SelectSolution();
+        nextGenerationsSolution = SS.tournamentSelection(meetNameAndEvaluation, meetMapData, TOURNAMENT_SIZE, INITIAL_SOLUTION_NUMBER);
         //------------------------------------------------ここまでfor文
 
         //初期解のインスタンスを破棄
@@ -124,3 +85,49 @@ public class Main {
     }
 
 }
+//
+////解のリストであるSolutionDataListの各要素に対してmutationを確率的に行う。
+//        SolutionDataListAfterMutation = new ArrayList<>();
+//        for(LinkedHashMap<String, List<Integer>> solution : SolutionDataList){
+//
+//        if(random.nextInt(100) < 100){
+//        meetNameMap = new LinkedHashMap<>();
+//        meetNameMapCopy = new LinkedHashMap<>();
+//        for(int i = 0; i < solution.size(); i++){
+//        for(String keyname : solution.keySet()){
+//        if(i == cnt){
+//        meetNameMap.put(i, keyname);
+//        meetNameMapCopy.put(i, keyname);
+//        cnt = 0;
+//        break;
+//        }
+//        cnt++;
+//        }
+//        }
+//        System.out.println("マップ　：　" + meetNameMap);
+//        meetDataMapList = new ArrayList<>();
+//        meetDataMapList.add(solution);
+//        System.out.println("リスト　：　" + meetDataMapList);
+//        meetNameNumber = new ArrayList<>();
+//        for(int k = 0; k < solution.size(); k++){
+//        meetNameNumber.add(k);
+//        }
+//        System.out.println(meetNameNumber);
+//        Collections.shuffle(meetNameNumber);
+//        mutationGene1 = meetNameNumber.get(0);
+//        mutationGene2 = meetNameNumber.get(1);
+//        meetNameMap.replace(mutationGene1, meetNameMapCopy.get(mutationGene2));
+//        meetNameMap.replace(mutationGene2, meetNameMapCopy.get(mutationGene1));
+//        System.out.println(mutationGene1);
+//        System.out.println(mutationGene2);
+//        System.out.println(meetNameMap);
+//        afterMutation = new LinkedHashMap<>();
+//        for(int n = 0; n < solution.size(); n++){
+//        afterMutation.put(meetNameMap.get(n), solution.get(meetNameMap.get(n)));
+//        }
+//        System.out.println(afterMutation);
+//        SolutionDataListAfterMutation.add(afterMutation);
+//        continue;
+//        }
+//        SolutionDataListAfterMutation.add(solution);
+//        }

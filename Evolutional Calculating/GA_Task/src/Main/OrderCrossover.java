@@ -16,9 +16,9 @@ public class OrderCrossover {
     private List<String> parentSolution2 = new ArrayList<>();
     private List<String> offspring1MeetName = new ArrayList<>();
     private List<String> offspring2MeetName = new ArrayList<>();
-    private LinkedHashMap<String, List> offspring1SolutionMap = new LinkedHashMap<>();
-    private LinkedHashMap<String, List> offspring2SolutionMap = new LinkedHashMap<>();
-    private List<LinkedHashMap<String, List>> OrderCrossoverSolutionList = new ArrayList<>();
+    private LinkedHashMap<String, List<Integer>> offspring1SolutionMap = new LinkedHashMap<>();
+    private LinkedHashMap<String, List<Integer>> offspring2SolutionMap = new LinkedHashMap<>();
+    private List<LinkedHashMap<String, List<Integer>>> OrderCrossoverSolutionList = new ArrayList<>();
     private Random random = new Random();
     private int separatePoint;
 
@@ -30,7 +30,7 @@ public class OrderCrossover {
 //    }
 
 //    public List<List<Map>> SolutionsOrderCrossover(List<List<Map>> SolutionPopulationList, int CrossoverNumber){
-    public List<LinkedHashMap<String, List>> SolutionsOrderCrossover(List<LinkedHashMap<String, List>> SolutionPopulationList, int CrossoverloopNumber, int initialSolutionNumber) {
+    public List<LinkedHashMap<String, List<Integer>>> SolutionsOrderCrossover(List<LinkedHashMap<String, List<Integer>>> SolutionPopulationList, int CrossoverloopNumber, int initialSolutionNumber) {
         //親の個体を重複無しでランダムに得られるように乱数のリストを生成
         for (int k = 0; k < initialSolutionNumber; k++) {
             this.randomCrossoverPlaceList.add(k);
@@ -68,7 +68,7 @@ public class OrderCrossover {
 
             for(int i = 0; i < this.offspring1MeetName.size(); i++){
                 out1 :
-                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList) {
+                for (LinkedHashMap<String, List<Integer>> meetMap : SolutionPopulationList) {
                     for (String meetName : meetMap.keySet()) {
                         if (meetName.equals(this.offspring1MeetName.get(i))) {
                             System.out.println("操作前 : " + this.offspring1MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring1MeetName.get(i)));
@@ -82,7 +82,7 @@ public class OrderCrossover {
 
             for(int i = 0; i < this.offspring2MeetName.size(); i++){
                 out2 :
-                for (LinkedHashMap<String, List> meetMap : SolutionPopulationList) {
+                for (LinkedHashMap<String, List<Integer>> meetMap : SolutionPopulationList) {
                     for (String meetName : meetMap.keySet()) {
                         if (meetName.equals(this.offspring2MeetName.get(i))) {
                             System.out.println("操作前 : " + this.offspring2MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring2MeetName.get(i)));
