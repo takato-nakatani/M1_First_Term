@@ -14,8 +14,8 @@ public class OrderCrossover {
     private List<Integer> randomCrossoverPlaceList = new ArrayList<>();
     private List<String> parentSolution1 = new ArrayList<>();
     private List<String> parentSolution2 = new ArrayList<>();
-    private List<String> offspring1MeetName = new ArrayList<>();
-    private List<String> offspring2MeetName = new ArrayList<>();
+    private List<String> offspring1meatName = new ArrayList<>();
+    private List<String> offspring2meatName = new ArrayList<>();
     private LinkedHashMap<String, List<Integer>> offspring1SolutionMap = new LinkedHashMap<>();
     private LinkedHashMap<String, List<Integer>> offspring2SolutionMap = new LinkedHashMap<>();
     private List<LinkedHashMap<String, List<Integer>>> OrderCrossoverSolutionList = new ArrayList<>();
@@ -48,32 +48,32 @@ public class OrderCrossover {
             //順序交叉の分岐点をランダムに決定
             this.separatePoint = this.random.nextInt(this.parentSolution1.size());
             //GenerateOffspringメソッドにより子孫1と子孫2を生成
-            this.offspring1MeetName = this.GenerateOffspring(this.separatePoint, this.parentSolution1, this.parentSolution2);
-            this.offspring2MeetName = this.GenerateOffspring(this.separatePoint, this.parentSolution2, this.parentSolution1);
+            this.offspring1meatName = this.GenerateOffspring(this.separatePoint, this.parentSolution1, this.parentSolution2);
+            this.offspring2meatName = this.GenerateOffspring(this.separatePoint, this.parentSolution2, this.parentSolution1);
             System.out.println("分割点" + this.separatePoint);
-            System.out.println("子孫1：" + this.offspring1MeetName);
-            System.out.println("子孫2：" + this.offspring2MeetName);
+            System.out.println("子孫1：" + this.offspring1meatName);
+            System.out.println("子孫2：" + this.offspring2meatName);
             //以下、子孫1にデータ埋め込み。
-            for(int i = 0; i < this.offspring1MeetName.size(); i++){
+            for(int i = 0; i < this.offspring1meatName.size(); i++){
                 out1 :
-                for (LinkedHashMap<String, List<Integer>> meetMap : SolutionPopulationList) {
-                    for (String meetName : meetMap.keySet()) {
-                        if (meetName.equals(this.offspring1MeetName.get(i))) {
-                            System.out.println("操作前 : " + this.offspring1MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring1MeetName.get(i)));
-                            this.offspring1SolutionMap.put(this.offspring1MeetName.get(i), meetMap.get(this.offspring1MeetName.get(i)));
+                for (LinkedHashMap<String, List<Integer>> meatMap : SolutionPopulationList) {
+                    for (String meatName : meatMap.keySet()) {
+                        if (meatName.equals(this.offspring1meatName.get(i))) {
+                            System.out.println("操作前 : " + this.offspring1meatName.get(i) + "のデータ：" + meatMap.get(this.offspring1meatName.get(i)));
+                            this.offspring1SolutionMap.put(this.offspring1meatName.get(i), meatMap.get(this.offspring1meatName.get(i)));
                             break out1;
                         }
                     }
                 }
             }
             //以下、子孫2にデータ埋め込み。
-            for(int i = 0; i < this.offspring2MeetName.size(); i++){
+            for(int i = 0; i < this.offspring2meatName.size(); i++){
                 out2 :
-                for (LinkedHashMap<String, List<Integer>> meetMap : SolutionPopulationList) {
-                    for (String meetName : meetMap.keySet()) {
-                        if (meetName.equals(this.offspring2MeetName.get(i))) {
-                            System.out.println("操作前 : " + this.offspring2MeetName.get(i) + "のデータ：" + meetMap.get(this.offspring2MeetName.get(i)));
-                            this.offspring2SolutionMap.put(this.offspring2MeetName.get(i), meetMap.get(this.offspring2MeetName.get(i)));
+                for (LinkedHashMap<String, List<Integer>> meatMap : SolutionPopulationList) {
+                    for (String meatName : meatMap.keySet()) {
+                        if (meatName.equals(this.offspring2meatName.get(i))) {
+                            System.out.println("操作前 : " + this.offspring2meatName.get(i) + "のデータ：" + meatMap.get(this.offspring2meatName.get(i)));
+                            this.offspring2SolutionMap.put(this.offspring2meatName.get(i), meatMap.get(this.offspring2meatName.get(i)));
                             break out2;
                         }
                     }
@@ -91,13 +91,13 @@ public class OrderCrossover {
 
     //親を引数で受け取り、順序交叉を行うメソッド。
     private List<String> GenerateOffspring(int separatePoint, List<String> parentSolution1, List<String> parentSolution2){
-        List<String> offspringMeetName = new ArrayList<>();
+        List<String> offspringmeatName = new ArrayList<>();
         Map<Integer, String> countPlaceandName = new TreeMap<>();
 
         //子1の生成。親1から部分的に引き継ぎ、親1の残りの部分は親2の出てくる順番に格納する。
         //親１から一部を引き継ぐ
         for (int i = 0; i< separatePoint; i++) {
-            offspringMeetName.add(parentSolution1.get(i));
+            offspringmeatName.add(parentSolution1.get(i));
         }
         //親１の残りの要素が親２で現れている順番と肉の種類をcountPlaceに格納
         for(int j = separatePoint; j < parentSolution1.size(); j++){
@@ -112,8 +112,8 @@ public class OrderCrossover {
         while(mapIterator.hasNext()) {
             // nextを使用して値を取得する
             Integer key = (Integer)mapIterator.next();
-            offspringMeetName.add(countPlaceandName.get(key));
+            offspringmeatName.add(countPlaceandName.get(key));
         }
-        return offspringMeetName;
+        return offspringmeatName;
     }
 }

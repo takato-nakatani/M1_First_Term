@@ -14,85 +14,76 @@ public class FileOperation {
     private List<String> csvStringList = new ArrayList<>();
     private List<Integer> csvIntegerList = new ArrayList<>();
     private String stringNumberData;
-    private List<List<String>> meetCsvDataListString = new ArrayList<>();
-    private List<List<Integer>> meetCsvDataListInteger = new ArrayList<>();
+    private List<List<String>> meatCsvDataListString = new ArrayList<>();
+    private List<List<Integer>> meatCsvDataListInteger = new ArrayList<>();
 
-    public List<List<String>> OpenCsvToMeetDataMapString(String filepath){
+    public List<List<String>> OpenCsvTomeatDataMapString(String filepath){
         try{
             File file = new File(filepath);
             FileReader filereader = new FileReader(file);
             BufferedReader bufferedreader = new BufferedReader(filereader);
-            this.meetCsvDataListString = new ArrayList<>();
+            this.meatCsvDataListString = new ArrayList<>();
             csvStringList = new ArrayList<>();
 
             while ((this.stringNumberData = bufferedreader.readLine()) != null){
                 this.csvStringList = ParseLineString(this.stringNumberData);
                 System.out.println(stringNumberData);
-                this.meetCsvDataListString.add(this.csvStringList);
+                this.meatCsvDataListString.add(this.csvStringList);
             }
 
             bufferedreader.close();
         }catch (IOException ex){
             ex.printStackTrace();
         }
-        return this.meetCsvDataListString;
+        return this.meatCsvDataListString;
     }
 
-    public List<List<Integer>> OpenCsvToMeetDataMapInteger(String filepath){
+    public List<List<Integer>> OpenCsvTomeatDataMapInteger(String filepath){
         try{
             File file = new File(filepath);
             FileReader filereader = new FileReader(file);
             BufferedReader bufferedreader = new BufferedReader(filereader);
-            this.meetCsvDataListInteger = new ArrayList<>();
+            this.meatCsvDataListInteger = new ArrayList<>();
             csvIntegerList = new ArrayList<>();
 
             while ((this.stringNumberData = bufferedreader.readLine()) != null){
                 this.csvIntegerList = ParseLineInteger(this.stringNumberData);
                 System.out.println(stringNumberData);
-                this.meetCsvDataListInteger.add(this.csvIntegerList);
+                this.meatCsvDataListInteger.add(this.csvIntegerList);
             }
 
             bufferedreader.close();
         }catch (IOException ex){
             ex.printStackTrace();
         }
-        return this.meetCsvDataListInteger;
+        return this.meatCsvDataListInteger;
     }
 
     private static List<Integer> ParseLineInteger(String line){
-        List<Integer> meetIntDataList = new ArrayList<Integer>();
+        List<Integer> meatIntDataList = new ArrayList<Integer>();
         StringTokenizer token = new StringTokenizer(line, ",");
         while (token.hasMoreElements()) {
             String s = token.nextToken();
             try {
-                meetIntDataList.add(Integer.parseInt(s));
+                meatIntDataList.add(Integer.parseInt(s));
             } catch (Exception ex) {
                 new Exception("Bad Integer in " + "[" + line + "]. " + ex.getMessage());
             }
         }
-        return meetIntDataList;
+        return meatIntDataList;
     }
 
     private static List<String> ParseLineString(String line){
-        List<String> meetStrDataList = new ArrayList<String>();
+        List<String> meatStrDataList = new ArrayList<String>();
         StringTokenizer token = new StringTokenizer(line, ",");
         while (token.hasMoreElements()) {
             String s = token.nextToken();
             try {
-                meetStrDataList.add(s);
+                meatStrDataList.add(s);
             } catch (Exception ex) {
                 new Exception("Bad Integer in " + "[" + line + "]. " + ex.getMessage());
             }
         }
-        return meetStrDataList;
+        return meatStrDataList;
     }
-
-//                this.token = new StringTokenizer(stringNumberData, ",");
-//                this.meetCsvData = new ArrayList<>();
-//
-//                while (this.token.hasMoreTokens()){
-//                    this.meetCsvData.add(this.token.nextToken());
-//                }
-//
-//                this.meetCsvDataList.add(this.meetCsvData);
 }
