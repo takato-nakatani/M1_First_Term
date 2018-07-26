@@ -19,7 +19,7 @@ public class SelectSolution {
     private List<LinkedHashMap<String, List<Integer>>> nextGenerationSolutionList = new ArrayList<>();
 
     public List<LinkedHashMap<String, List<Integer>>> tournamentSelection(LinkedHashMap<List<String>, Double> meatNameAndEvaluation, LinkedHashMap<String, List<Integer>> meatMapData, LinkedHashMap<List<String>, Double> nextGenerationsSolutionAndEvaluations, int TOURNAMENT_SIZE, int NEXT_GENERATION_SOLUTION_NUMBER){
-        System.out.println("-----------------------------------------------トーナメント方式----------------------------------------------------");
+        //System.out.println("-----------------------------------------------トーナメント方式----------------------------------------------------");
         this.nextGenerationSolutionList = new ArrayList<>();
         //ココからトーナメント方式
         for(int i = 0; i < NEXT_GENERATION_SOLUTION_NUMBER; i++){
@@ -27,13 +27,13 @@ public class SelectSolution {
             this.tournamentMap = new LinkedHashMap<>();
             this.nextGenerationSolution = new LinkedHashMap<>();
             this.meatNameLists.addAll(meatNameAndEvaluation.keySet());
-            System.out.println("シャッフル前 : " + this.meatNameLists);
+            //System.out.println("シャッフル前 : " + this.meatNameLists);
             Collections.shuffle(this.meatNameLists);
-            System.out.println("シャッフル後 : " + this.meatNameLists);
+            //System.out.println("シャッフル後 : " + this.meatNameLists);
             for(int j = 0; j < TOURNAMENT_SIZE; j++){
                 this.tournamentMap.put(this.meatNameLists.get(j), meatNameAndEvaluation.get(this.meatNameLists.get(j)));
             }
-            System.out.println("トーナメントメンバー : " + this.tournamentMap);
+            //System.out.println("トーナメントメンバー : " + this.tournamentMap);
             this.Max = 0;
             for (List solutionlist : this.tournamentMap.keySet()) {
                 if(meatNameAndEvaluation.get(solutionlist) > Max){
@@ -43,14 +43,14 @@ public class SelectSolution {
             }
             nextGenerationsSolutionAndEvaluations.put(this.MaxObjectiveFunctionSolution.get(0), this.Max);
             //最も適応度(目的関数値)の高い解の順番が一番前に来るようになっているので、Listの0番目を取り出せばよい。
-            System.out.println("生き残り解 : " + this.MaxObjectiveFunctionSolution.get(0));
+            //System.out.println("生き残り解 : " + this.MaxObjectiveFunctionSolution.get(0));
             for (String meatname : this.MaxObjectiveFunctionSolution.get(0)) {
                 this.nextGenerationSolution.put(meatname, meatMapData.get(meatname));
             }
-            System.out.println("次世代の解の一つ : " + this.nextGenerationSolution);
+            //System.out.println("次世代の解の一つ : " + this.nextGenerationSolution);
             this.nextGenerationSolutionList.add(this.nextGenerationSolution);
-            System.out.println("次世代の解集合 : " + this.nextGenerationSolutionList);
-            System.out.println("------------------------------------トーナメント一周終了---------------------------------------------");
+            //System.out.println("次世代の解集合 : " + this.nextGenerationSolutionList);
+            //System.out.println("------------------------------------トーナメント一周終了---------------------------------------------");
         }
         return this.nextGenerationSolutionList;
     }

@@ -27,7 +27,7 @@ public class FileOperation {
 
             while ((this.stringNumberData = bufferedreader.readLine()) != null){
                 this.csvStringList = ParseLineString(this.stringNumberData);
-                System.out.println(stringNumberData);
+                //System.out.println(stringNumberData);
                 this.meatCsvDataListString.add(this.csvStringList);
             }
 
@@ -48,7 +48,7 @@ public class FileOperation {
 
             while ((this.stringNumberData = bufferedreader.readLine()) != null){
                 this.csvIntegerList = ParseLineInteger(this.stringNumberData);
-                System.out.println(stringNumberData);
+                //System.out.println(stringNumberData);
                 this.meatCsvDataListInteger.add(this.csvIntegerList);
             }
 

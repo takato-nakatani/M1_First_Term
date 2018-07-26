@@ -10,10 +10,10 @@ public class InitialSolution {
     private List<String> meatNameData = new ArrayList<>();
     private List<LinkedHashMap<String, List<Integer>>> initialSolutionsList = new ArrayList<>();
 
-    //適当な1つの解から引数で与えるsolutionNumber個の初期解を返すメソッド
+    //引数で与えるsolutionNumber個の初期解を返すメソッド
     public List<LinkedHashMap<String, List<Integer>>> GenerateInitialsolution(LinkedHashMap<String, List<Integer>> meatMapData, int initialsolutionNumber) {
         this.meatNameData.addAll(meatMapData.keySet());
-        System.out.println(this.meatNameData + "あ");
+        //System.out.println(this.meatNameData + "あ");
         for(int i = 0; i < initialsolutionNumber; i++) {
             Collections.shuffle(this.meatNameData);
             this.meatMapDataAftersort = new LinkedHashMap<>();
@@ -23,8 +23,8 @@ public class InitialSolution {
             this.initialSolutionsList.add(this.meatMapDataAftersort);
         }
         //返すリストの形List{[0] -> Map{[肉の名前], List[肉のデータ]}, [1] -> …}
-        System.out.println(this.initialSolutionsList);
-        System.out.println("-------------------------------------------初期解------------------------------------------");
+        //System.out.println(this.initialSolutionsList);
+        //System.out.println("-------------------------------------------初期解------------------------------------------");
         return this.initialSolutionsList;
     }
 }

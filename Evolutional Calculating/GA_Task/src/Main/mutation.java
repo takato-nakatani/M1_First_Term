@@ -7,6 +7,7 @@ import java.util.*;
 public class Mutation {
 
     private int cnt = 0;
+    private int rand = 0;
     private int mutationGene1;
     private int mutationGene2;
     private Random random = new Random();
@@ -21,7 +22,12 @@ public class Mutation {
         //解のリストであるSolutionDataListの各要素に対してmutationを確率的に行う。
         this.SolutionDataListAfterMutation = new ArrayList<>();
         for(LinkedHashMap<String, List<Integer>> solution : SolutionDataList){
-            if(this.random.nextInt(100) < MUTATION_PROBABILITY){
+            this.rand = this.random.nextInt(100);
+            //System.out.println(SolutionDataList);
+            //System.out.println(solution);
+            //System.out.println(this.rand);
+            if(this.rand < MUTATION_PROBABILITY){
+                //System.out.println("突然変異");
                 this.meatNameMap = new LinkedHashMap<>();
                 this.meatNameMapCopy = new LinkedHashMap<>();
                 for(int i = 0; i < solution.size(); i++){
@@ -35,10 +41,10 @@ public class Mutation {
                         this.cnt++;
                     }
                 }
-                System.out.println("マップ(数値⇒肉名)　：　" + this.meatNameMap);
+                //System.out.println("マップ(数値⇒肉名)　：　" + this.meatNameMap);
                 this.meatDataMapList = new ArrayList<>();
                 this.meatDataMapList.add(solution);
-                System.out.println("リスト(マップ{肉名⇒肉データ})　：　" + this.meatDataMapList);
+                //System.out.println("リスト(マップ{肉名⇒肉データ})　：　" + this.meatDataMapList);
                 this.meatNameNumber = new ArrayList<>();
                 for(int k = 0; k < solution.size(); k++){
                     meatNameNumber.add(k);
@@ -48,23 +54,23 @@ public class Mutation {
                 this.mutationGene2 = this.meatNameNumber.get(1);
                 this.meatNameMap.replace(this.mutationGene1, this.meatNameMapCopy.get(this.mutationGene2));
                 this.meatNameMap.replace(this.mutationGene2, this.meatNameMapCopy.get(this.mutationGene1));
-                System.out.println("突然変異1箇所目 : " + this.mutationGene1);
-                System.out.println("突然変異2箇所目 : " + this.mutationGene2);
-                System.out.println("突然変異前の解 : " + this.meatNameMapCopy);
-                System.out.println("突然変異後の解 : " + this.meatNameMap);
+                //System.out.println("突然変異1箇所目 : " + this.mutationGene1);
+                //System.out.println("突然変異2箇所目 : " + this.mutationGene2);
+                //System.out.println("突然変異前の解 : " + this.meatNameMapCopy);
+                //System.out.println("突然変異後の解 : " + this.meatNameMap);
                 this.afterMutation = new LinkedHashMap<>();
                 for(int n = 0; n < solution.size(); n++){
                     this.afterMutation.put(this.meatNameMap.get(n), solution.get(this.meatNameMap.get(n)));
                 }
-                System.out.println(this.afterMutation);
+                //System.out.println(this.afterMutation);
                 this.SolutionDataListAfterMutation.add(this.afterMutation);
                 continue;
             }
             this.SolutionDataListAfterMutation.add(solution);
-            System.out.println("-----------------------------------突然変異1周しました-------------------------------------");
+            //System.out.println("-----------------------------------突然変異1周しました-------------------------------------");
         }
-        System.out.println("突然変異前の解集合 : " + SolutionDataList);
-        System.out.println("突然変異後の解集合 : " + this.SolutionDataListAfterMutation);
+        //System.out.println("突然変異前の解集合 : " + SolutionDataList);
+        //System.out.println("突然変異後の解集合 : " + this.SolutionDataListAfterMutation);
         return this.SolutionDataListAfterMutation;
     }
 }

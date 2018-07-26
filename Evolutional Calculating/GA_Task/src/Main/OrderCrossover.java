@@ -26,7 +26,7 @@ public class OrderCrossover {
         //親の個体を重複無しでランダムに得られるように乱数のリストを生成
         for (int k = 0; k < initialSolutionNumber; k++) {
             this.randomCrossoverPlaceList.add(k);
-            System.out.println("個数　：　" + this.randomCrossoverPlaceList + initialSolutionNumber);
+            //System.out.println("個数　：　" + this.randomCrossoverPlaceList + initialSolutionNumber);
         }
 
         ///交叉開始
@@ -36,30 +36,30 @@ public class OrderCrossover {
             this.offspring1SolutionMap = new LinkedHashMap<>();
             this.offspring2SolutionMap = new LinkedHashMap<>();
             Collections.shuffle(this.randomCrossoverPlaceList);
-            System.out.println("-------------------------------------------交叉------------------------------------------");
-            System.out.println(this.randomCrossoverPlaceList);
-            System.out.println(SolutionPopulationList);
+            //System.out.println("-------------------------------------------交叉------------------------------------------");
+            //System.out.println(this.randomCrossoverPlaceList);
+            //System.out.println(SolutionPopulationList);
 
             //親の個体を重複無しでランダムに2つ取り出して2つの変数を格納
             this.parentSolution1.addAll(SolutionPopulationList.get(this.randomCrossoverPlaceList.get(0)).keySet());
-            System.out.println("親1：" + parentSolution1);
+            //System.out.println("親1：" + parentSolution1);
             this.parentSolution2.addAll(SolutionPopulationList.get(this.randomCrossoverPlaceList.get(1)).keySet());
-            System.out.println("親2：" + parentSolution2);
+            //System.out.println("親2：" + parentSolution2);
             //順序交叉の分岐点をランダムに決定
             this.separatePoint = this.random.nextInt(this.parentSolution1.size());
             //GenerateOffspringメソッドにより子孫1と子孫2を生成
             this.offspring1meatName = this.GenerateOffspring(this.separatePoint, this.parentSolution1, this.parentSolution2);
             this.offspring2meatName = this.GenerateOffspring(this.separatePoint, this.parentSolution2, this.parentSolution1);
-            System.out.println("分割点" + this.separatePoint);
-            System.out.println("子孫1：" + this.offspring1meatName);
-            System.out.println("子孫2：" + this.offspring2meatName);
+            //System.out.println("分割点" + this.separatePoint);
+            //System.out.println("子孫1：" + this.offspring1meatName);
+            //System.out.println("子孫2：" + this.offspring2meatName);
             //以下、子孫1にデータ埋め込み。
             for(int i = 0; i < this.offspring1meatName.size(); i++){
                 out1 :
                 for (LinkedHashMap<String, List<Integer>> meatMap : SolutionPopulationList) {
                     for (String meatName : meatMap.keySet()) {
                         if (meatName.equals(this.offspring1meatName.get(i))) {
-                            System.out.println("操作前 : " + this.offspring1meatName.get(i) + "のデータ：" + meatMap.get(this.offspring1meatName.get(i)));
+                            //System.out.println("操作前 : " + this.offspring1meatName.get(i) + "のデータ：" + meatMap.get(this.offspring1meatName.get(i)));
                             this.offspring1SolutionMap.put(this.offspring1meatName.get(i), meatMap.get(this.offspring1meatName.get(i)));
                             break out1;
                         }
@@ -72,20 +72,20 @@ public class OrderCrossover {
                 for (LinkedHashMap<String, List<Integer>> meatMap : SolutionPopulationList) {
                     for (String meatName : meatMap.keySet()) {
                         if (meatName.equals(this.offspring2meatName.get(i))) {
-                            System.out.println("操作前 : " + this.offspring2meatName.get(i) + "のデータ：" + meatMap.get(this.offspring2meatName.get(i)));
+                            //System.out.println("操作前 : " + this.offspring2meatName.get(i) + "のデータ：" + meatMap.get(this.offspring2meatName.get(i)));
                             this.offspring2SolutionMap.put(this.offspring2meatName.get(i), meatMap.get(this.offspring2meatName.get(i)));
                             break out2;
                         }
                     }
                 }
             }
-            System.out.println("子孫1の解データ：" + offspring1SolutionMap);
+            //System.out.println("子孫1の解データ：" + offspring1SolutionMap);
             this.OrderCrossoverSolutionList.add(this.offspring1SolutionMap);
-            System.out.println("子孫2の解データ：" + offspring2SolutionMap);
+            //System.out.println("子孫2の解データ：" + offspring2SolutionMap);
             this.OrderCrossoverSolutionList.add(this.offspring2SolutionMap);
         }
-        System.out.println(this.OrderCrossoverSolutionList);
-        System.out.println("-------------------------------------------交叉終了------------------------------------------");
+        //System.out.println(this.OrderCrossoverSolutionList);
+        //System.out.println("-------------------------------------------交叉終了------------------------------------------");
         return this.OrderCrossoverSolutionList;
     }
 
